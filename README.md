@@ -14,3 +14,4 @@ python -m pip install --user softdelete/dist/soft-delete-0.1.tar.gz
 Quick start
 =============
 Go to [docs/README.md](docs/README.md)
+
