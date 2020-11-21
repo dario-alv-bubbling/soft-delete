@@ -1,4 +1,4 @@
-from django.db import models, transaction
+from django.db import models, transaction, ProgrammingError
 from django.utils import timezone
 
 
@@ -58,6 +58,9 @@ class SoftDeleteModel(BaseModel):
         self.save()
         self._on_delete()
 
+    def force_delete(self):
+        super().delete()
+
     def restore(self):
         self.deleted_at = None
         self.save()
@@ -89,4 +92,8 @@ class SoftDeleteModel(BaseModel):
                 TODO:re-evaluate 
                 """
                 for relation_obj in relation.model.objects.filter(**name_filter):
-                    relation_obj.delete()
+                    try:
+                        relation_obj.delete()
+                    except ProgrammingError as ex:
+                        print(f'{ex}')
+
